@@ -1,3 +1,12 @@
+# Database Schema ERD Diagram – Antique Bookstore
+
+## Introduction
+
+This document provides the definition of the Antique Bookstore database schema. It uses DBML script notation and is used to visualize the Entity-Relationship Diagram (ERD).
+
+## Database Schema (DBML)
+
+```
 Table Book {
     BookID char(8) [pk, increment]
     Title varchar [not null]
@@ -142,3 +151,5 @@ Table SalesAuditLog {
     NewValue varchar [not null]
     Login varchar [note: 'EmployeeID uses sql login']
 }
+```
+

@@ -1,16 +1,16 @@
 # DBML
 
-### How to Visualize the Database Schema
+### How to Visualize Database Schema in DBML
 
-This directory contains a .dsl file which uses Database Markup Language (DBML) to describe the structure of an application's database.
+This `database_erd_dbml.md` contains document a `.dsl` code block which uses Database Markup Language (DBML) to describe the structure of the application database schema.
 
 To visualize this schema as an Entity-Relationship Diagram (ERD):
 
-1.  **Copy the Code:** Open the file and copy its entire contents.
-2.  **Go to dbdiagram.io:** Open your web browser and navigate to [https://dbdiagram.io/home](https://dbdiagram.io/home).
-3.  **Paste the Code:** In the editor panel on the left side of the dbdiagram.io site, delete any existing sample code and paste the DBML code you copied from the `.dsl` file.
-4.  **View the Diagram:** The database diagram should be automatically generated and to appear in the right panel.
+1.  **Copy the Code:** Select the full script block.
+2.  **Go to dbdiagram.io:** Navigate to [https://dbdiagram.io/home](https://dbdiagram.io/home).
+3.  **Paste the Code:** In the editor panel on the left side of the `dbdiagram.io`, delete any existing sample code and paste the DBML script.
+4.  **View / Export the Diagram:** The database diagram should be automatically generated and to appear in the right panel.
 
-You can use this tool to view relationships between tables, understand data types, and grasp the overall database structure.
+You can use this tool to **view relationships** between tables, understand **data types**, and grasp the overall **database structure**.
 
-For more information on the DBML syntax used in the `.dsl` file, refer to the official documentation: [https://dbml.dbdiagram.io/docs/](https://dbml.dbdiagram.io/docs/)
+For more information on the DBML syntax refer to the official documentation: [https://dbml.dbdiagram.io/docs/](https://dbml.dbdiagram.io/docs/)
