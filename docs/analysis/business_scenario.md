@@ -1,6 +1,6 @@
-﻿# Scenario
+# Scenario
 
-## Scenario description (interpreted)
+## Scenario description (interpreted to English)
 
 The manager of a small bookstore has asked you to design and implement a database for centralized information storage, in order to streamline and improve the efficiency of inventory management, order tracking, and sales.
 The store specializes in rare and antiquarian books, so the total number of books in the store generally does not exceed several thousand.
@@ -47,4 +47,3 @@ However, only managers should have the right to modify information about authors
 Для эффективного обслуживания покупателей каждому работнику необходим доступ к централизованному источнику информации об авторах, имеющихся в магазине книгах, покупателях и заказах.
 В настоящее время работники берут эти сведения из каталожных карточек и списков. Часто в них содержатся устаревшие сведения, что ведёт к ошибкам. Кроме того, вместо заполнения бумажных бланков у каждого работника должна быть возможность оперативного создания, учёта и модификации заказов.
 Однако право модифицировать сведения об авторах, книгах и покупателях следует предоставить только управляющим.
-
