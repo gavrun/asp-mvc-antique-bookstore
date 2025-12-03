@@ -9,12 +9,14 @@ namespace AntiqueBookstore.Data.Seed
     public static class IdentitySeeder
     {
         // Seeding static data for Identity 
+
         public static async Task SeedUserAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope()) // visibility to resolve scoped services
             {
                 // Get services from the scope
                 var services = scope.ServiceProvider;
+
                 var logger = services.GetRequiredService<ILogger<Program>>(); // Logger
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>(); 
@@ -27,24 +29,21 @@ namespace AntiqueBookstore.Data.Seed
                     await context.Database.MigrateAsync();
                     logger.LogInformation("Migrations applied successfully.");
 
-                    // Seed user
+                    // Seed roles and users
                     logger.LogInformation("Starting seeding...");
                     await SeedRolesAsync(roleManager, logger);
                     await SeedUsersAsync(userManager, context, logger);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogInformation($"An error occurred during seeding: {ex.Message}");
+                    logger.LogInformation($"Error occurred during seeding: {ex.Message}");
                 }
             }
         }
 
-        
-
-
         public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager, ILogger logger)
         {
-            // Create roles in Identity
+            // Create Identity roles
             string[] roleNames = { "Manager", "Sales" };
 
             foreach (var roleName in roleNames)
@@ -62,7 +61,7 @@ namespace AntiqueBookstore.Data.Seed
             var salesUser = new ApplicationUser { UserName = "sales@example.com", Email = "sales@example.com", EmailConfirmed = true };
             var unlinkedUser = new ApplicationUser { UserName = "unlinked@example.com", Email = "unlinked@example.com", EmailConfirmed = true }; 
 
-            // Creating users
+            // Create users
             if (await userManager.FindByEmailAsync(adminUser.Email) == null)
             {
                 logger.LogInformation("Creating user...");
@@ -70,7 +69,6 @@ namespace AntiqueBookstore.Data.Seed
                 await userManager.AddToRoleAsync(adminUser, "Manager");
                 logger.LogInformation("User created successfully");
             }
-
             if (await userManager.FindByEmailAsync(salesUser.Email) == null)
             {
                 logger.LogInformation("Creating user...");
@@ -78,7 +76,6 @@ namespace AntiqueBookstore.Data.Seed
                 await userManager.AddToRoleAsync(salesUser, "Sales");
                 logger.LogInformation("User created successfully");
             }
-
             if (await userManager.FindByEmailAsync(unlinkedUser.Email) == null)
             {
                 logger.LogInformation("Creating user...");
@@ -87,7 +84,7 @@ namespace AntiqueBookstore.Data.Seed
                 logger.LogInformation("User created successfully");
             }
 
-            // Linking users to employees
+            // Link users to employees
             var manager = await userManager.FindByEmailAsync("manager@example.com");
             var sales = await userManager.FindByEmailAsync("sales@example.com");
             //var unlinked = await userManager.FindByEmailAsync("unlinked@example.com");
@@ -109,13 +106,11 @@ namespace AntiqueBookstore.Data.Seed
                 manager.EmployeeId = managerEmployee.Id;
                 await userManager.UpdateAsync(manager);
             }
-
             if (sales != null && salesEmployee != null)
             {
                 sales.EmployeeId = salesEmployee.Id;
                 await userManager.UpdateAsync(sales);
             }
         }
-
     }
 }

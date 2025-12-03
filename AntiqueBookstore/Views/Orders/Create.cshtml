@@ -8,7 +8,6 @@
     ViewData["Title"] = "Create Order";
 }
 
-
 <h3>@ViewData["Title"]</h3>
 
 <h4>Order</h4>
@@ -107,7 +106,7 @@
                         for (int i = 0; i < Model.Sales.Count; i++)
                         {
                             var bookTitle = Model.AvailableBooks?.FirstOrDefault(b => b.Value == Model.Sales[i].BookId.ToString())?.Text ?? $"Book ID: {Model.Sales[i].BookId}";
-                            // Note: Getting title might be tricky if book was removed from AvailableBooks list on server.
+                            // Getting title might be tricky if book was removed from AvailableBooks list on server.
                             // A better approach might be to pass book titles along with the Sales list in the ViewModel on POST failure.
                             <tr>
                                 <td>@bookTitle</td>
@@ -241,7 +240,7 @@
                     <td class="text-right">${salePrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
                     <td><button type="button" class="btn btn-sm btn-outline-danger remove-item-btn">Remove</button></td>
                 `;
-                 // Note: Currency formatting based on Locale
+                 // Currency formatting based on Locale
             }
 
             function removeHiddenFields(bookId) {

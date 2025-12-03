@@ -8,7 +8,7 @@
         // Current Position
         public DateTime? EndDate { get; set; } // Nullable 
 
-        // NOTE: Protect, PositionHistory can be created by mistake
+        // Protect, PositionHistory can be created by mistake
         public bool IsActive { get; set; }
 
         // Navigation property to Employee

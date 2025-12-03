@@ -17,10 +17,8 @@ namespace AntiqueBookstore.Models
         [DataType(DataType.Date)]
         public DateTime HireDate { get; set; }
 
-
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
-
 
         // Current position
         [Display(Name = "Current Position")]
@@ -29,12 +27,11 @@ namespace AntiqueBookstore.Models
         [Display(Name = "Current Level")]
         public string? CurrentLevelName { get; set; }
 
-
         // Position history
         [Display(Name = "Position History")]
         public List<PositionHistoryViewModel> PositionHistory { get; set; } = new List<PositionHistoryViewModel>();
 
-        // INFO: Potentially link ApplicationUserId 
+        // TODO: Potentially link ApplicationUserId 
         // However, not clear how to keep user id and email history
 
         // public string? ApplicationUserId { get; set; }

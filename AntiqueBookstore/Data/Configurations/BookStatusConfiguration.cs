@@ -20,6 +20,7 @@ namespace AntiqueBookstore.Data.Configurations
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            // Seed data
             builder.HasData(
                 new BookStatus { Id = 1, Name = "Available", IsActive = true },
                 new BookStatus { Id = 2, Name = "Reserved", IsActive = true },

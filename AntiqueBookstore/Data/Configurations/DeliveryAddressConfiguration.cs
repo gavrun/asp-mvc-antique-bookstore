@@ -30,7 +30,7 @@ namespace AntiqueBookstore.Data.Configurations
                .HasMaxLength(255)
                .IsRequired(false);
 
-            builder.Property(da => da.PostalCode) // NOTE: Index, PostalCode
+            builder.Property(da => da.PostalCode) // Index, PostalCode
                 .IsRequired()
                 .HasMaxLength(10);
 

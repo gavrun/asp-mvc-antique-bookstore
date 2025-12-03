@@ -30,7 +30,7 @@ namespace AntiqueBookstore.Data.Configurations
                    .HasForeignKey(ph => ph.PositionId)
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete Position if exists in history
 
-            // Seed data 
+            // Seed Position History
             builder.HasData(
                 new PositionHistory
                 {

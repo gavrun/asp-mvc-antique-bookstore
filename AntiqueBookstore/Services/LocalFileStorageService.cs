@@ -4,18 +4,18 @@
     {
         // Service responsible for managing file storage locally
 
-        // inject dependencies
+        // Inject dependencies
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private readonly ILogger<LocalFileStorageService> _logger; // Logger
 
-        // allowed extensions
+        // Allowed extensions
         private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
 
-        // max file size 
+        // Max file size 
         private const long _maxFileSize = 5 * 1024 * 1024; // 5 MB
 
-        // constructor
+        // Constructor
 
         //public LocalFileStorageService(IWebHostEnvironment webHostEnvironment, ILogger<LocalFileStorageService> logger)
         //{
@@ -29,10 +29,10 @@
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        // save file
+        // Save file
         public async Task<FileUploadResult> SaveFileAsync(IFormFile file, string subfolder)
         {
-            // validate file
+            // Validate file
             if (file == null || file.Length == 0)
             {
                 _logger.LogInformation("[SaveFileAsync] No file or empty file.");
@@ -40,7 +40,7 @@
                 return FileUploadResult.Failed("No file provided or file is empty.");
             }
 
-            // validate extension
+            // Validate extension
             var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
 
             if (!_allowedExtensions.Contains(fileExtension))
@@ -49,14 +49,14 @@
                 return FileUploadResult.Failed("Invalid file type. Allowed types are: " + string.Join(", ", _allowedExtensions));
             }
 
-            // validate file size
+            // Validate file size
             if (file.Length > _maxFileSize)
             {
                 _logger.LogInformation($"[SaveFileAsync] File size exceeds the limit: {file.Length} bytes");
                 return FileUploadResult.Failed("File size exceeds the limit of 5 MB.");
             }
 
-            // save file
+            // Save file
             try
             {
                 string targetFolder = Path.Combine(_webHostEnvironment.WebRootPath, subfolder);
@@ -88,21 +88,21 @@
             {
                 _logger.LogError(ex, "[SaveFileAsync] Error saving file {FileName} to subfolder {Subfolder}", file.FileName, subfolder);
                 //throw;
-                return FileUploadResult.Failed("An internal error occurred while saving the file.");
+                return FileUploadResult.Failed("Internal error occurred while saving the file.");
             }
         }
 
-        // delete file
+        // Delete file
         public async Task<FileDeleteResult> DeleteFileAsync(string relativePath)
         {
-            // validate path
+            // Validate path
             if (string.IsNullOrWhiteSpace(relativePath))
             {
                 _logger.LogWarning("[DeleteFileAsync] Attempted to delete with null or empty file path.");
                 return FileDeleteResult.Failed("File path cannot be null or empty.");
             }
 
-            // delete file
+            // Delete file
             try
             {
                 string absolutePath = Path.Combine(_webHostEnvironment.WebRootPath, relativePath.TrimStart('/', '\\'));
@@ -133,7 +133,7 @@
             catch (Exception ex)
             {
                 _logger.LogError(ex, "[DeleteFileAsync] Unexpected error deleting file: {FilePath}", relativePath);
-                return FileDeleteResult.Failed($"An unexpected error occurred: {ex.Message}");
+                return FileDeleteResult.Failed($"Unexpected error occurred: {ex.Message}");
             }
 
         }

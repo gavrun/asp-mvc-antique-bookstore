@@ -9,7 +9,6 @@ namespace AntiqueBookstore.Domain.Entities
         public DateTime? DeliveryDate { get; set; }
         public DateTime? PaymentDate { get; set; }
 
-
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; } = null!; // Required
 
@@ -28,8 +27,7 @@ namespace AntiqueBookstore.Domain.Entities
         // Navigation property to Sale 
         public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
 
-
-        // INFO: Add a calculated property for the Order total
+        // TODO: Add a calculated property for the Order total
         [NotMapped]
         public decimal TotalAmount => Sales.Sum(s => s.SalePrice);
     }

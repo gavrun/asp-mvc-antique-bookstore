@@ -16,7 +16,7 @@ namespace AntiqueBookstore.Data
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser> // hook up <ApplicationUser> (IdentityUser) to IdentityDbContext
     {
-        // DbSet for main model entities
+        // Main model entities
         public DbSet<Book> Books { get; set; } 
         public DbSet<Author> Authors { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -28,28 +28,26 @@ namespace AntiqueBookstore.Data
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleEvent> SaleEvents { get; set; }
 
-        // DbSet for other linking entities
+        // Other linking entities
         public DbSet<BookAuthor> BookAuthors { get; set; }
         public DbSet<PositionHistory> PositionHistories { get; set; }
 
-        // DbSet for referencing entities
+        // Referencing entities (lookup tables)
         public DbSet<BookCondition> BookConditions { get; set; }
         public DbSet<BookStatus> BookStatuses { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
 
-        // audit log for Sales
+        // Audit log for Sales
         public DbSet<SalesAuditLog> SalesAuditLogs { get; set; }
 
-
-        // constructor with config options
+        // Constructor with config options
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
 
         }
 
-
-        // for Fluent API configuration
+        // Fluent API configuration
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Applly default Identity configuration for Users, Roles, etc.
@@ -61,6 +59,10 @@ namespace AntiqueBookstore.Data
 
             //modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            // Apply custom configurations
+
+            // Seed static data
         }
     }
 }

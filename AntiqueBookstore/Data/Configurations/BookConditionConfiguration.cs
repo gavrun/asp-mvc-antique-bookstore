@@ -6,7 +6,7 @@ namespace AntiqueBookstore.Data.Configurations
 {
     public class BookConditionConfiguration : IEntityTypeConfiguration<BookCondition> // used when ApplyConfigurationsFromAssembly
     {
-        // configure the BookCondition entity
+        // Configure BookCondition entity
         public void Configure(EntityTypeBuilder<BookCondition> builder)
         {
             // Set table name

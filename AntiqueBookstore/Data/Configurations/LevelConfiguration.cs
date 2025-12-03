@@ -21,15 +21,15 @@ namespace AntiqueBookstore.Data.Configurations
 
             builder.Property(r => r.IsActive)
                 .IsRequired();
-                //.HasDefaultValue(true);
+            //.HasDefaultValue(true);
 
-            // Seed Roles 'Manager, Sales'
+            // Seed Roles, "Manager, Sales"
             builder.HasData(
                 new Level { Id = 1, Name = "Manager", Description = "Manages store operations", IsActive = true },
                 new Level { Id = 2, Name = "Sales", Description = "Handles sales and customer interactions", IsActive = true }
             );
 
-            // TODO: Link to Position
+            // TODO: Link to Position when seeding not implemented for demonstration
         }
     }
 }

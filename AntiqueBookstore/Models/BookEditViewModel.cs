@@ -5,7 +5,7 @@ namespace AntiqueBookstore.Models
 {
     public class BookEditViewModel
     {
-        // BookEditViewModel class corresponding to the Book entity
+        // BookEditViewModel class corresponding to Book entity
 
         public int Id { get; set; }
 
@@ -37,7 +37,6 @@ namespace AntiqueBookstore.Models
         [Display(Name = "Recommended Price")]
         public decimal? RecommendedPrice { get; set; }
 
-
         // Relations
 
         [Required(ErrorMessage = "Please select a condition.")]
@@ -51,7 +50,6 @@ namespace AntiqueBookstore.Models
         [Required(ErrorMessage = "Please select at least one author.")]
         [Display(Name = "Authors")]
         public List<int> SelectedAuthorIds { get; set; } = new List<int>();
-
 
         // Fill <select> elements
         public IEnumerable<SelectListItem>? ConditionsList { get; set; }

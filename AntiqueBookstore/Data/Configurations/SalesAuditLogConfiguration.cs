@@ -6,10 +6,10 @@ namespace AntiqueBookstore.Data.Configurations
 {
     public class SalesAuditLogConfiguration : IEntityTypeConfiguration<SalesAuditLog>
     {
-        // NOTE: Review string vs. Collection/JSON 
+        // TODO: Review string vs. Collection/JSON 
         public void Configure(EntityTypeBuilder<SalesAuditLog> builder)
         {
-            builder.HasKey(log => log.EventId); // NOTE: Named PK
+            builder.HasKey(log => log.EventId); // Named PK
 
             builder.Property(log => log.EventId)
                 .ValueGeneratedOnAdd(); // Auto-increment for EventId
@@ -27,7 +27,7 @@ namespace AntiqueBookstore.Data.Configurations
                 .HasMaxLength(10); // Operation type length, INSERT, UPDATE, DELETE
 
             builder.Property(log => log.ColumnName)
-                .HasMaxLength(128) // Column name length avg
+                .HasMaxLength(128)  // Column name length avg
                 .IsRequired(false); // NULL for INSERT, DELETE
 
             builder.Property(log => log.OldValue)
@@ -37,9 +37,8 @@ namespace AntiqueBookstore.Data.Configurations
                    .IsRequired(false);
 
             builder.Property(log => log.Login)
-                .HasMaxLength(256) // Стандартная длина для Identity User Name/Email
+                .HasMaxLength(256) // Standard length for Identity User Name/Email
                 .IsRequired(false);
-
 
             // INFO: Performance, Indices not required for Audit Log which is not used for queries
 

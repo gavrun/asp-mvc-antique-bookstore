@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AntiqueBookstore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250413162215_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251203192157_InitialCreateFullSchema")]
+    partial class InitialCreateFullSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.14")
+                .HasAnnotation("ProductVersion", "8.0.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -938,7 +938,7 @@ namespace AntiqueBookstore.Data.Migrations
                             Id = 1,
                             CustomerId = 1,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 12, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1597),
+                            OrderDate = new DateTime(2025, 12, 2, 19, 21, 56, 612, DateTimeKind.Utc).AddTicks(8261),
                             OrderStatusId = 1,
                             PaymentMethodId = 2
                         },
@@ -948,7 +948,7 @@ namespace AntiqueBookstore.Data.Migrations
                             CustomerId = 3,
                             DeliveryAddressId = 3,
                             EmployeeId = 2,
-                            OrderDate = new DateTime(2025, 4, 10, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1603),
+                            OrderDate = new DateTime(2025, 11, 30, 19, 21, 56, 612, DateTimeKind.Utc).AddTicks(8336),
                             OrderStatusId = 6,
                             PaymentMethodId = 1
                         });

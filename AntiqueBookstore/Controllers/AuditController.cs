@@ -13,13 +13,12 @@ using System.Text;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager")] // work in progress
+    [Authorize(Roles = "Manager")] // TODO: work in progress
     public class AuditController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         private const int PageSize = 10; // Pagination, Number of records per page/table
-
 
         public AuditController(ApplicationDbContext context)
         {

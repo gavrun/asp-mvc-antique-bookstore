@@ -18,13 +18,14 @@ namespace AntiqueBookstore.Data.Configurations
 
             builder.Property(pm => pm.IsActive)
                 .IsRequired();
-                //.HasDefaultValue(true);
+            //.HasDefaultValue(true);
 
+            // Seed data
             builder.HasData(
                 new PaymentMethod { Id = 1, Name = "Credit Card", IsActive = true },
                 new PaymentMethod { Id = 2, Name = "Cash", IsActive = true },
-                new PaymentMethod { Id = 3, Name = "PayPal", IsActive = false }, // Example of a payment method that is 
-                new PaymentMethod { Id = 4, Name = "Bank Transfer", IsActive = false } // 'to be implemented'
+                new PaymentMethod { Id = 3, Name = "PayPal", IsActive = false }, // Example of a payment method 'to be implemented'
+                new PaymentMethod { Id = 4, Name = "Bank Transfer", IsActive = false }
             );
         }
     }

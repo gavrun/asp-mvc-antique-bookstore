@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager")] // work in progress
+    [Authorize(Roles = "Manager")] // TODO: work in progress
     public class UserManagementController : Controller
     {
         // Services DI
@@ -17,7 +17,6 @@ namespace AntiqueBookstore.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        
 
         public UserManagementController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -26,7 +25,8 @@ namespace AntiqueBookstore.Controllers
             _roleManager = roleManager;
         }
 
-        // GET: /UserManagement, get all application Users table
+        // GET: /UserManagement
+        // Get all application Users table
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -35,7 +35,8 @@ namespace AntiqueBookstore.Controllers
             return View(viewModel);
         }
 
-        // POST: /UserManagement/AssignRole, link new Role or updating existing
+        // POST: /UserManagement/AssignRole
+        // Link new Role or updating existing
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignRole(string userId, int selectedEmployeeId)
@@ -53,7 +54,7 @@ namespace AntiqueBookstore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Load Employee with position history and employee levels
+            // Load Employee with position history and Employee levels
             var selectedEmployee = await GetEmployeeWithLevelDataAsync(selectedEmployeeId);
             if (selectedEmployee == null)
             {
@@ -65,10 +66,10 @@ namespace AntiqueBookstore.Controllers
             if (!selectedEmployee.IsActive)
             {
                 TempData["ErrorMessage"] = $"Cannot link user to inactive employee '{selectedEmployee.FirstName} {selectedEmployee.LastName}'.";
-                return RedirectToAction(nameof(Index)); // Прерываем операцию
+                return RedirectToAction(nameof(Index)); // aborting the operation
             }
 
-            // Check if Employee is already linked to another user
+            // Check if Employee is already linked to another User
             if (!string.IsNullOrEmpty(selectedEmployee.ApplicationUserId) && selectedEmployee.ApplicationUserId != userId)
             {
                 var linkedUser = await _userManager.FindByIdAsync(selectedEmployee.ApplicationUserId);
@@ -100,7 +101,7 @@ namespace AntiqueBookstore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Unlink Employee from the previous user 
+            // Unlink Employee from the previous User 
             bool needsSave = await UnlinkOldEmployeeIfExistsAsync(userId, selectedEmployeeId);
 
             // Manage Identity Roles
@@ -120,13 +121,13 @@ namespace AntiqueBookstore.Controllers
             {
                 try
                 {
-                    await _context.SaveChangesAsync(); // here we actually save all changes (unlink old, link new)
+                    await _context.SaveChangesAsync(); // here we save all changes (unlink old, link new)
 
                     TempData["SuccessMessage"] = $"User '{user.UserName}' successfully linked to employee {selectedEmployee.FirstName} {selectedEmployee.LastName} and assigned role '{targetRole}'.";
                 }
                 catch (DbUpdateException)
                 {
-                    TempData["ErrorMessage"] = "An error occurred while saving changes.";
+                    TempData["ErrorMessage"] = "Error occurred while saving changes.";
                 }
             }
             else
@@ -137,7 +138,8 @@ namespace AntiqueBookstore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: /UserManagement/RemoveRole, Unlink Employee and delete Roles references
+        // POST: /UserManagement/RemoveRole
+        // Unlink Employee and delete Roles references
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveRole(int employeeId)
@@ -165,7 +167,7 @@ namespace AntiqueBookstore.Controllers
             var user = await _userManager.FindByIdAsync(employee.ApplicationUserId);
             if (user == null)
             {
-                // corner case: user not found, unlink employee
+                // Corner case: User not found, unlink Employee
                 employee.ApplicationUserId = null;
                 await _context.SaveChangesAsync();
 
@@ -173,7 +175,7 @@ namespace AntiqueBookstore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // BUG: Current User cannot be unlinked
+            // Current User cannot be unlinked
             if (user.Id == _userManager.GetUserId(User))
             {
                 TempData["ErrorMessage"] = "You cannot unlink Employee associated with the current account.";
@@ -203,13 +205,14 @@ namespace AntiqueBookstore.Controllers
             }
             catch (DbUpdateException)
             {
-                TempData["ErrorMessage"] = "An error occurred while saving changes.";
+                TempData["ErrorMessage"] = "Error occurred while saving changes.";
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: /UserManagement/SyncRole, Synchronize Role by Employee level
+        // POST: /UserManagement/SyncRole
+        // Synchronize Role by Employee level
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SyncRole(string userId)
@@ -243,7 +246,7 @@ namespace AntiqueBookstore.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Define target role
+            // Define target Role
             string targetRole = GetRoleNameFromLevel(currentLevel.Id);
             if (string.IsNullOrEmpty(targetRole))
             {
@@ -285,9 +288,6 @@ namespace AntiqueBookstore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //
-        //
-        //
         // REFACTOR: helper method build ViewModel
         private async Task<UserManagementViewModel> BuildUserManagementViewModel()
         {
@@ -343,7 +343,7 @@ namespace AntiqueBookstore.Controllers
             return viewModel;
         }
 
-        // helper method for determining Role by level
+        // Helper method for determining Role by level
         private string GetRoleNameFromLevel(int levelId)
         {
             switch (levelId)
@@ -354,9 +354,6 @@ namespace AntiqueBookstore.Controllers
             }
         }
 
-        //
-        //
-        //
         // REFACTOR: helper method
         private async Task<Employee> GetEmployeeWithLevelDataAsync(int employeeId)
         {
@@ -397,13 +394,13 @@ namespace AntiqueBookstore.Controllers
         {
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            // do nothing if Role is set
+            // Do nothing if Role is set
             if (currentRoles.Count == 1 && currentRoles.First() == targetRole)
             {
                 return (true, $"User '{user.UserName}' already has the correct role '{targetRole}'. No changes made."); // true InfoMessage tuple
             }
 
-            // remove current Roles
+            // Remove current Roles
             if (currentRoles.Any())
             {
                 var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
@@ -413,17 +410,17 @@ namespace AntiqueBookstore.Controllers
                 }
             }
 
-            // set target Role
+            // Set target Role
             var addResult = await _userManager.AddToRoleAsync(user, targetRole);
             if (!addResult.Succeeded)
             {
-                // try and stay on a safe side (best effort)
+                // Try and stay on a safe side (best effort)
                 await _userManager.AddToRolesAsync(user, currentRoles);
 
                 return (false, $"Failed to add role '{targetRole}' for user '{user.UserName}'. {string.Join(", ", addResult.Errors.Select(e => e.Description))}"); // false ErrorMessage tuple
             }
 
-            return (true, null); // true no Message tuple
+            return (true, null); // true no message tuple
         }
 
         // REFACTOR: helper method
@@ -432,7 +429,7 @@ namespace AntiqueBookstore.Controllers
             var existingLink = await _context.Employees.FirstOrDefaultAsync(e => e.ApplicationUserId == userId);
             if (existingLink != null && existingLink.Id != currentSelectedEmployeeId)
             {
-                // was linked, only mark for update
+                // Was linked, only mark for update
                 existingLink.ApplicationUserId = null;
                 _context.Update(existingLink);
 

@@ -5,7 +5,7 @@ namespace AntiqueBookstore.Domain.Entities
     public class Book
     {
         // Entity properties
-        public int Id { get; set; } // NOTE: named PK
+        public int Id { get; set; } // Named PK
         public string Title { get; set; } = string.Empty;
         public string? Publisher { get; set; }
         public int PublicationDate { get; set; } // Year of publication
@@ -20,7 +20,6 @@ namespace AntiqueBookstore.Domain.Entities
         // Cover placeholder if null
         public string? CoverImagePath { get; set; } 
 
-
         // Foreign key to BookCondition
         public int ConditionId { get; set; } // FK 
 
@@ -31,14 +30,11 @@ namespace AntiqueBookstore.Domain.Entities
 
         public virtual BookStatus Status { get; set; } = null!; // Required
 
-        //
         public virtual ICollection<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
 
-        //
         public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
 
-
-        // NOTE: Optionally add unmapped property for easy access to Authors
+        // Optionally add unmapped property for easy access to Authors
         [NotMapped]
         public IEnumerable<Author> Authors => BookAuthors.Select(ba => ba.Author);
     }

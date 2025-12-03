@@ -5,7 +5,7 @@ namespace AntiqueBookstore.Models
 {
     public class EmployeeCreateViewModel
     {
-        // properties for the EmployeeCreateViewModel class corresponding to the Employee entity and its dependencies
+        // Properties for EmployeeCreateViewModel class corresponding to Employee entity and its dependencies
 
         // Id
 
@@ -22,7 +22,7 @@ namespace AntiqueBookstore.Models
         [Required(ErrorMessage = "Hire date is required.")]
         [DataType(DataType.Date)]
         [Display(Name = "Hire Date")]
-        public DateTime HireDate { get; set; } = DateTime.Today; // defatuls to today
+        public DateTime HireDate { get; set; } = DateTime.Today; // defaults to today
 
         public string? Comment { get; set; }
 

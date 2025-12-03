@@ -2,8 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-
-@* for Anonimous User *@
+@* For Anonimous User *@
 
 @if (User.Identity == null || !User.Identity.IsAuthenticated)
 {
@@ -18,14 +17,12 @@
     </div>
 }
 
-
-
-@* for Authenticated User *@
+@* For Authenticated User *@
 
 @if (User.Identity != null && User.Identity.IsAuthenticated)
 {
 
-    @* for Managers (Admin) *@
+    @* For Managers (Admin) *@
 
     @if (User.IsInRole("Manager"))
     {
@@ -51,8 +48,7 @@
         <hr />
     }
 
-
-    @* for Sales *@
+    @* For Sales *@
 
     @if (User.IsInRole("Sales"))
     {
@@ -84,9 +80,8 @@
         <div class="text-center">
             <h1 class="display-4">New users are welcomed!</h1>
             <p>Hello, @User.Identity.Name!</p>
-            <p>Your account is pending activation.</p>
+            <p>Your account is PENDING ACTIVATION.</p>
         </div>
     }
-
 }
 

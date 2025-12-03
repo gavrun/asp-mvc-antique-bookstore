@@ -18,7 +18,7 @@ namespace AntiqueBookstore.Models
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal SalePrice { get; set; }
 
-        // applied discounts EventId or EventName 
+        // Applied discounts EventId or EventName 
         [Display(Name = "Discount")]
         public string? EventName { get; set; }
     }

@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // work in progress
+    [Authorize(Roles = "Manager,Sales")] // TODO: work in progress
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +23,7 @@ namespace AntiqueBookstore.Controllers
         public BooksController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, 
             ILogger<BooksController> logger, IFileStorageService fileStorageService)
         {
-            // safer way to inject dependencies
+            // Safer way to inject dependencies
 
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
@@ -64,10 +64,10 @@ namespace AntiqueBookstore.Controllers
             return View(viewModel);
         }
 
-        // created helper with BookCreateViewModel 
+        // Created helper with BookCreateViewModel 
         private async Task PopulateViewModelListsAsync(BookCreateViewModel model)
         {
-            // get data from Db
+            // Get data from Db
             var authors = await _context.Authors
                 .OrderBy(a => a.FirstName)
                 .OrderBy(a => a.LastName)
@@ -82,7 +82,7 @@ namespace AntiqueBookstore.Controllers
                 .OrderBy(s => s.Name)
                 .ToListAsync();
 
-            // create SelectList and MultiSelectList to appoint to ViewModel
+            // Create SelectList and MultiSelectList to appoint to ViewModel
             model.Authors = new MultiSelectList(authors, "Id", "DisplayName", model.SelectedAuthorIds);
             model.Conditions = new SelectList(conditions, "Id", "Name", model.ConditionId);
             model.Statuses = new SelectList(statuses, "Id", "Name", model.StatusId);
@@ -96,7 +96,7 @@ namespace AntiqueBookstore.Controllers
             // Server-side validation
             if (!ModelState.IsValid)
             {
-                // NOTE: Repopulate
+                // Repopulate
                 // If the model state is NOT valid (e.g., required field missing, range error):
                 // It's CRUCIAL to repopulate the dropdown lists before returning the view,
                 // otherwise, they will be empty when the form is redisplayed with errors.
@@ -156,7 +156,7 @@ namespace AntiqueBookstore.Controllers
                 ConditionId = viewModel.ConditionId,       
                 StatusId = viewModel.StatusId, 
                 
-                CoverImagePath = relativeImagePath // can be null
+                CoverImagePath = relativeImagePath // can be Null
             };
 
             // TODO: Database related logic (Add Book, Add BookAuthors, SaveChanges) can be on a dedicated Service layer.
@@ -172,7 +172,7 @@ namespace AntiqueBookstore.Controllers
                 {
                     foreach (var authorId in viewModel.SelectedAuthorIds)
                     {
-                        // joint entity, tuple
+                        // Joint entity, tuple
                         var bookAuthor = new BookAuthor
                         {
                             BookId = book.Id, 
@@ -209,7 +209,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // Loading the book with its related data
+            // Loading the Book with its related data
             var book = await _context.Books
                 .Include(b => b.Condition)
                 .Include(b => b.Status)
@@ -223,14 +223,13 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // no BookDetailsViewModel exists for Details
+            // No BookDetailsViewModel exists for Details
             return View(book);
         }
 
-        // overloaded helper BookEditViewModel
+        // Overloaded helper BookEditViewModel
         private async Task PopulateViewModelListsAsync(BookEditViewModel viewModel)
         {
-            // same here
             var authors = await _context.Authors
                 .OrderBy(a => a.FirstName)
                 .ThenBy(a => a.LastName)
@@ -260,7 +259,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // Находим книгу, включая ее текущих авторов
+            // Find the Book including its Authors
             var book = await _context.Books
                                      .Include(b => b.BookAuthors)
                                      .FirstOrDefaultAsync(b => b.Id == id);
@@ -282,7 +281,7 @@ namespace AntiqueBookstore.Controllers
                 ConditionId = book.ConditionId,
                 StatusId = book.StatusId,
                 ExistingCoverImagePath = book.CoverImagePath,
-                // authors list
+                // Authors list
                 SelectedAuthorIds = book.BookAuthors.Select(ba => ba.AuthorId).ToList()
             };
 
@@ -297,7 +296,7 @@ namespace AntiqueBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind("Id,Title,Publisher,PublicationDate,PurchasePrice,RecommendedPrice,ConditionId,StatusId,SelectedAuthorIds,ExistingCoverImagePath")] BookEditViewModel viewModel,
-            IFormFile? coverImageFile) // matches <input type="file">
+            IFormFile? coverImageFile) // Matches <input type="file">
         {
             if (id != viewModel.Id)
             {
@@ -315,7 +314,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // remove validation errors related to collections that we fill programmatically
+            // Remove validation errors related to collections that we fill programmatically
             ModelState.Remove("ConditionsList");
             ModelState.Remove("StatusesList");
             ModelState.Remove("AuthorsList");
@@ -328,7 +327,7 @@ namespace AntiqueBookstore.Controllers
                     {
                         _logger.LogInformation("New cover image uploaded for book id {BookId}. Processing...", id);
 
-                        // new image uploaded for cover image 
+                        // New image uploaded for cover image 
                         if (!string.IsNullOrEmpty(bookToUpdate.CoverImagePath))
                         {
                             _logger.LogInformation("Attempting to delete old cover image '{ImagePath}' for book id {BookId}.", bookToUpdate.CoverImagePath, id);
@@ -345,7 +344,7 @@ namespace AntiqueBookstore.Controllers
                             }
                         }
 
-                        // save the new file
+                        // Save the new file
                         _logger.LogInformation("Saving new cover image for book id {BookId}...", id);
                         FileUploadResult saveResult = await _fileStorageService.SaveFileAsync(coverImageFile, "images/covers");
 
@@ -358,18 +357,18 @@ namespace AntiqueBookstore.Controllers
                             return View(viewModel);
                         }
 
-                        // update cover image path
+                        // Update cover image path
                         bookToUpdate.CoverImagePath = saveResult.RelativePath;
                         _logger.LogInformation("New cover image '{ImagePath}' saved and path updated for book id {BookId}.", bookToUpdate.CoverImagePath, id);
 
                     }
                     else
                     {
-                        // do nothing
+                        // Do nothing
                         _logger.LogInformation("No new cover image uploaded for book id {BookId}. Existing image path remains.", id);
                     }
 
-                    // update Book by BookEditViewModel
+                    // Update Book by BookEditViewModel
                     bookToUpdate.Title = viewModel.Title;
                     bookToUpdate.Publisher = viewModel.Publisher;
                     bookToUpdate.PublicationDate = viewModel.PublicationDate;
@@ -377,10 +376,10 @@ namespace AntiqueBookstore.Controllers
                     bookToUpdate.RecommendedPrice = viewModel.RecommendedPrice;
                     bookToUpdate.ConditionId = viewModel.ConditionId;
                     bookToUpdate.StatusId = viewModel.StatusId;
-                    // update Book many-to-many
+                    // Update Book many-to-many
                     await UpdateBookAuthors(bookToUpdate, viewModel.SelectedAuthorIds);
                     
-                    // save 
+                    // Save 
                     await _context.SaveChangesAsync();
                     _logger.LogInformation("Book with id {BookId} updated successfully.", id);
                     TempData["SuccessMessage"] = "Book updated successfully!";
@@ -390,7 +389,7 @@ namespace AntiqueBookstore.Controllers
                 {
                     _logger.LogError(ex, "Concurrency error updating book with id {BookId}.", id);
 
-                    // potential conflicts
+                    // Potential conflicts
                     var entry = ex.Entries.Single();
                     var databaseValues = await entry.GetDatabaseValuesAsync();
 
@@ -410,7 +409,7 @@ namespace AntiqueBookstore.Controllers
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Error updating book with id {BookId}.", id);
-                    ModelState.AddModelError("", "An unexpected error occurred while saving the book. Please try again.");
+                    ModelState.AddModelError("", "Unexpected error occurred while saving the book. Please try again.");
                 }
             }
             else
@@ -431,7 +430,7 @@ namespace AntiqueBookstore.Controllers
             return View(viewModel);
         }
 
-        // helper Book-Author (Many-to-Many)
+        // Helper Book-Author (Many-to-Many)
         private async Task UpdateBookAuthors(Book bookToUpdate, List<int> selectedAuthorIds)
         {
             if (selectedAuthorIds == null)
@@ -510,7 +509,7 @@ namespace AntiqueBookstore.Controllers
         {
             // Find Book by id, including linked data
             var bookToDelete = await _context.Books
-                                     .Include(b => b.Sales) // check if the Book is referenced in Sales
+                                     .Include(b => b.Sales) // Check if the Book is referenced in Sales
                                      .FirstOrDefaultAsync(b => b.Id == id);
 
             if (bookToDelete == null)
@@ -532,7 +531,7 @@ namespace AntiqueBookstore.Controllers
 
             try
             {
-                // remove cover image
+                // Remove cover image
                 string? coverImagePath = bookToDelete.CoverImagePath; 
                 if (!string.IsNullOrEmpty(coverImagePath))
                 {
@@ -550,7 +549,7 @@ namespace AntiqueBookstore.Controllers
                     }
                 }
 
-                // remove book with Cascade Delete for BookAuthors
+                // Remove Book with Cascade Delete for BookAuthors
                 _context.Books.Remove(bookToDelete);
                 await _context.SaveChangesAsync();
 
@@ -561,16 +560,15 @@ namespace AntiqueBookstore.Controllers
             catch (DbUpdateException ex) 
             {
                 _logger.LogError(ex, "Error deleting book with id {BookId}.", id);
-                TempData["ErrorMessage"] = "An error occurred while deleting the book. It might be related to other data linked to it.";
+                TempData["ErrorMessage"] = "Error occurred while deleting the book. It might be related to other data linked to it.";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex) // Обработка других неожиданных ошибок
+            catch (Exception ex) // Handle other unexpected errors
             {
                 _logger.LogError(ex, "Unexpected error deleting book with id {BookId}.", id);
-                TempData["ErrorMessage"] = "An unexpected error occurred while deleting the book.";
+                TempData["ErrorMessage"] = "Unexpected error occurred while deleting the book.";
                 return RedirectToAction(nameof(Index));
             }
         }
-
     }
 }

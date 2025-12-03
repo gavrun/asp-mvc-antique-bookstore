@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AntiqueBookstore.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreateFullSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -677,7 +677,7 @@ namespace AntiqueBookstore.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 4, 12, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1597), 1, null, 2 });
+                values: new object[] { 1, 1, null, null, 2, new DateTime(2025, 12, 2, 19, 21, 56, 612, DateTimeKind.Utc).AddTicks(8261), 1, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "Positions",
@@ -709,7 +709,7 @@ namespace AntiqueBookstore.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "CustomerId", "DeliveryAddressId", "DeliveryDate", "EmployeeId", "OrderDate", "OrderStatusId", "PaymentDate", "PaymentMethodId" },
-                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 4, 10, 16, 22, 15, 64, DateTimeKind.Utc).AddTicks(1603), 6, null, 1 });
+                values: new object[] { 2, 3, 3, null, 2, new DateTime(2025, 11, 30, 19, 21, 56, 612, DateTimeKind.Utc).AddTicks(8336), 6, null, 1 });
 
             migrationBuilder.InsertData(
                 table: "PositionHistories",

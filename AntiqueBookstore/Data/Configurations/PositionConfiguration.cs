@@ -27,7 +27,7 @@ namespace AntiqueBookstore.Data.Configurations
                    .HasForeignKey(p => p.LevelId)
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete Level if there are Positions
 
-            // Seed Positions "Store Manager", "Sales Associate"
+            // Seed Positions, "Manager, Sales"
             builder.HasData(
                 new Position { Id = 1, Title = "Store Manager", WorkSchedule = WorkSchedule.FullTime, LevelId = 1 },
                 new Position { Id = 2, Title = "Sales Associate", WorkSchedule = WorkSchedule.FullTime, LevelId = 2 }

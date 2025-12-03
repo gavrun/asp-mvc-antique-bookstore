@@ -43,9 +43,7 @@ namespace AntiqueBookstore.Models
         // Existing added Books in the Order (SaleCreateItemViewModel)
         public List<SaleCreateItemViewModel> Sales { get; set; } = new List<SaleCreateItemViewModel>();
 
-
         // public int? SelectedDeliveryAddressId { get; set; }
         // public SelectList? DeliveryAddresses { get; set; } // requires dynamic loading
-
     }
 }

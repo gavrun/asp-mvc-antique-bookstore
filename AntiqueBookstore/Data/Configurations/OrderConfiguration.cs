@@ -11,7 +11,7 @@ namespace AntiqueBookstore.Data.Configurations
             builder.HasKey(o => o.Id);
 
             builder.Property(o => o.OrderDate)
-                .IsRequired(true); // NOTE: OrderDate is required when creating an Order
+                .IsRequired(true);                     // OrderDate is required when creating an Order
 
             builder.Property(o => o.DeliveryDate)
                 .IsRequired(false);
@@ -35,9 +35,9 @@ namespace AntiqueBookstore.Data.Configurations
             builder.HasOne(o => o.DeliveryAddress)
                    .WithMany(da => da.Orders)
                    .HasForeignKey(o => o.DeliveryAddressId)
-                   .IsRequired(false) // Адрес не обязателен
+                   .IsRequired(false)                  // Address is not required
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete the Address if it is used in the Orders
-                                                       // NOTE: SetNull, if we want to reset FK in the Order when deleting the Address
+                                                       // SetNull, if we want to reset FK in the Order when deleting the Address
 
             // Relation to OrderStatus
             builder.HasOne(o => o.OrderStatus)
@@ -55,8 +55,7 @@ namespace AntiqueBookstore.Data.Configurations
             builder.HasMany(o => o.Sales)
                    .WithOne(s => s.Order)
                    .HasForeignKey(s => s.OrderId)
-                   .OnDelete(DeleteBehavior.Cascade); // Delete Sales items when deleting an Order
-
+                   .OnDelete(DeleteBehavior.Cascade);  // Delete Sales items when deleting an Order
 
             // Seed data
             builder.HasData(

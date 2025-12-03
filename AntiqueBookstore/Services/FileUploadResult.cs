@@ -15,14 +15,14 @@
         public string? ErrorMessage { get; init; }
 
 
-        // successful upload
+        // Successful upload
         public static FileUploadResult Succeeded(string relativePath) => new() 
         { 
             Success = true, 
             RelativePath = relativePath 
         };
 
-        // failed upload
+        // Failed upload
         public static FileUploadResult Failed(string errorMessage) =>new() 
         { 
             Success = false, 

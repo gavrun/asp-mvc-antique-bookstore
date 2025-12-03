@@ -7,7 +7,7 @@ namespace AntiqueBookstore.Domain.Entities
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
 
-        // enum for position type
+        // Enum for position type
         public WorkSchedule WorkSchedule { get; set; }
 
         // Foreign key 

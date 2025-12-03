@@ -9,14 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-     [Authorize(Roles = "Manager")] // work in progress
+     [Authorize(Roles = "Manager")] // TODO: work in progress
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<EmployeesController> _logger;
 
         private readonly UserManager<ApplicationUser> _userManager;
-
 
         public EmployeesController(ApplicationDbContext context, ILogger<EmployeesController> logger, UserManager<ApplicationUser> userManager)
         {
@@ -25,12 +24,11 @@ namespace AntiqueBookstore.Controllers
             _logger = logger;
         }
 
-
         // GET: Employees
         // show list of employees
         public async Task<IActionResult> Index()
         {
-            // get a list of employees with the current position
+            // Get a list of Employees with the current position
             var employeesData = await _context.Employees
                 .Include(e => e.PositionHistories)
                 .ThenInclude(ph => ph.Position)
@@ -41,7 +39,7 @@ namespace AntiqueBookstore.Controllers
 
             var viewModel = employeesData.Select(e =>
             {
-                // current position the last entry in history without end date
+                // Current position the last entry in history without end date
                 var currentPositionHistory = e.PositionHistories?
                                               .OrderByDescending(ph => ph.StartDate)
                                               .FirstOrDefault(ph => ph.EndDate == null);
@@ -57,7 +55,7 @@ namespace AntiqueBookstore.Controllers
                 };
             }).ToList();
 
-            // add info table Levels
+            // Add info table Levels
             var levelsData = await _context.Levels
                                    .OrderBy(l => l.Name)
                                    .ToListAsync();
@@ -68,14 +66,14 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Employees/Details/5
-        // show employee details
+        // Show Employee details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            // TODO: get an employee by ID with a history of positions and a related user
+            // TODO: Get Employee by ID with history of positions and related User
 
             var employee = await _context.Employees
                 .Include(e => e.PositionHistories)
@@ -101,12 +99,12 @@ namespace AntiqueBookstore.Controllers
                 // ApplicationUserId = employee.ApplicationUserId,
                 // UserEmail = employee.ApplicationUser?.Email,
                 PositionHistory = employee.PositionHistories?
-                // from earlier to later
+                // From earlier to later
                 .OrderBy(ph => ph.StartDate) 
-                // project each PositionHistory entry into PositionHistoryViewModel
+                // Project each PositionHistory entry into PositionHistoryViewModel
                 .Select(ph => new PositionHistoryViewModel
                 {
-                    PositionTitle = ph.Position?.Title ?? "N/A", // protect from null
+                    PositionTitle = ph.Position?.Title ?? "N/A", // Protect from Null
                     LevelName = ph.Position?.Level?.Name ?? "N/A",
                     StartDate = ph.StartDate,
                     EndDate = ph.EndDate
@@ -117,10 +115,10 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Employees/Create
-        // display the employee creation form
+        // Display Employee creation form
         public async Task<IActionResult> Create()
         {
-            // TODO: create ViewModel link to Positions
+            // TODO: Create ViewModel link to Positions
 
             var positionsList = await _context.Positions
                                       .OrderBy(p => p.Title)
@@ -131,19 +129,19 @@ namespace AntiqueBookstore.Controllers
             {
                 Positions = new SelectList(positionsList, "Id", "Title"), // SelectList collection to view
 
-                HireDate = DateTime.Today // force set the HireDate to view
+                HireDate = DateTime.Today // Force set the HireDate to view
             };
 
             return View(viewModel);
         }
 
         // POST: Employees/Create
-        // process form data to create an employee
+        // Process form data to create an Employee
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EmployeeCreateViewModel viewModel)
         {
-            // TODO: save Employee and PositionHistory record
+            // TODO: Save Employee and PositionHistory record
 
             if (ModelState.IsValid)
             {
@@ -185,14 +183,14 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Employees/Edit/5
-        // display the employee edit form
+        // Display Employee edit form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            // TODO: get an employee and his current position for editing
+            // TODO: Get Employee and his current position for editing
             var employee = await _context.Employees
                 .Include(e => e.PositionHistories)
                 //.Include(e => e.ApplicationUser)
@@ -203,7 +201,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // check if the employee is active
+            // Check if the Employee is active
             if (!employee.IsActive)
             {
                 TempData["WarningMessage"] = $"Employee {employee.FirstName} {employee.LastName} is inactive and cannot be edited.";
@@ -250,12 +248,12 @@ namespace AntiqueBookstore.Controllers
         }
 
         // POST: Employees/Edit/5
-        // process form data for editing an employee
+        // Process form data for editing an Employee
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EmployeeEditViewModel viewModel)
         {
-            // TODO: check employee 
+            // TODO: Check employee 
             if (id != viewModel.Id)
             {
                 return NotFound();
@@ -289,18 +287,18 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // check if the employee is active
+            // Check if the Employee is active
             if (!employeeToUpdate.IsActive)
             {
                 TempData["WarningMessage"] = $"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} is inactive and cannot be edited.";
                 return RedirectToAction(nameof(Index));
             }
 
-            // TODO: update Employee and managing PositionHistory
+            // TODO: Update Employee and managing PositionHistory
 
             if (ModelState.IsValid)
             {
-                // employee loaded and verified
+                // Employee loaded and verified
 
                 var currentPositionHistory = employeeToUpdate.PositionHistories
                                                  .OrderByDescending(ph => ph.StartDate)
@@ -314,7 +312,7 @@ namespace AntiqueBookstore.Controllers
                     return View(viewModel);
                 }
 
-                // update employee properties
+                // Update Employee properties
                 employeeToUpdate.FirstName = viewModel.FirstName;
                 employeeToUpdate.LastName = viewModel.LastName;
                 employeeToUpdate.Comment = viewModel.Comment;
@@ -322,7 +320,7 @@ namespace AntiqueBookstore.Controllers
                 // If SelectedApplicationUserId is an empty string, set it to Null, otherwise set it to Value
                 //employeeToUpdate.ApplicationUserId = string.IsNullOrEmpty(viewModel.SelectedApplicationUserId) ? null : viewModel.SelectedApplicationUserId;
 
-                // update employee position
+                // Update employee position
                 bool positionChanged = currentPositionHistory.PositionId != viewModel.SelectedPositionId;
 
                 if (positionChanged)
@@ -350,8 +348,7 @@ namespace AntiqueBookstore.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = $"Employee {employeeToUpdate.FirstName} {employeeToUpdate.LastName} updated successfully. [INFO]: "
                                                 + "Position change requires actualization [Sync Role] in User Management.";
-                                                // INFO: UserManagementController.SyncRole
-
+                                                // UserManagementController.SyncRole
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -359,7 +356,7 @@ namespace AntiqueBookstore.Controllers
                 {
                     _logger.LogError(dbEx, "Concurrency error updating book with id {EmployeeId}.", id);
 
-                    // potential conflicts, checking if record deleted while we were editing it
+                    // Potential conflicts, checking if record deleted while we were editing it
                     var exists = await EmployeeExists(viewModel.Id);
                     if (!exists)
                     {
@@ -368,7 +365,7 @@ namespace AntiqueBookstore.Controllers
                     }
                     else
                     {
-                        // record still exists but has been modified
+                        // Record still exists but has been modified
                         ModelState.AddModelError(string.Empty, "The record you attempted to edit "
                             + "was modified by another user after you got the original value. "
                             + "Edit operation was canceled. If you still want to edit this record, "
@@ -378,27 +375,27 @@ namespace AntiqueBookstore.Controllers
                 catch (Exception ex) 
                 {
                     _logger.LogError(ex, "Error updating employee with ID {EmployeeId}", viewModel.Id);
-                    ModelState.AddModelError(string.Empty, "An unexpected error occurred while saving changes. Please try again.");
+                    ModelState.AddModelError(string.Empty, "Unexpected error occurred while saving changes. Please try again.");
                 }
             }
 
-            // TODO: get ViewModel on validation error
+            // TODO: Get ViewModel on validation error
             await reloadDropdowns();
 
-            //viewModel contains user input and validation errors
+            // ViewModel contains user input and validation errors
             return View(viewModel);
             //return RedirectToAction(nameof(Index)); 
         }
 
         // GET: Employees/Deactivate/5
-        // display confirmation of employee deactivation
+        // Display confirmation of Employee deactivation
         public async Task<IActionResult> Deactivate(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            // TODO: get employee for deactivation confirmation
+            // TODO: Get Employee for deactivation confirmation
             var employee = await _context.Employees
                                  .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -407,14 +404,14 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // BUG: self-deactivation
-            var currentUser = await _userManager.GetUserAsync(User); // get current ApplicationUser
+            // Avoid self-deactivation
+            var currentUser = await _userManager.GetUserAsync(User); // Get current ApplicationUser
             if (currentUser == null)
             {
-                // not applicable when [Authorize] enabled
+                // Not applicable when [Authorize] enabled
                 return Challenge(); // 401, 403
             }
-            // match ApplicationUserId to current ID 
+            // Match ApplicationUserId to current ID 
             if (employee.ApplicationUserId != null && employee.ApplicationUserId == currentUser.Id)
             {
                 TempData["ErrorMessage"] = "You cannot deactivate your own account.";
@@ -431,12 +428,12 @@ namespace AntiqueBookstore.Controllers
         }
 
         // POST: Employees/Deactivate/5
-        // deactivate employee
+        // Deactivate Employee
         [HttpPost, ActionName("Deactivate")] // ActionName GET
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeactivateConfirmed(int id)
         {
-            // TODO: deactivate (IsActive = false)
+            // TODO: Deactivate (IsActive = false)
             var employee = await _context.Employees.FindAsync(id);
 
             if (employee == null)
@@ -444,7 +441,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // BUG: self-deactivation
+            // Avoid self-deactivation
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {
@@ -465,7 +462,7 @@ namespace AntiqueBookstore.Controllers
                     var linkedUser = await _userManager.FindByIdAsync(employee.ApplicationUserId);
                     unlinkedUserName = linkedUser?.UserName; // keep for message
                     
-                    employee.ApplicationUserId = null; // nlink Role
+                    employee.ApplicationUserId = null; // unlink Role
                     _logger.LogInformation("User {UserId} unlinked from Employee {EmployeeId} due to deactivation.", employee.ApplicationUserId, employee.Id);
                 }
 
@@ -486,14 +483,14 @@ namespace AntiqueBookstore.Controllers
             return RedirectToAction(nameof(Index)); // Post-Redirect-Get (PRG)
         }
 
-        // helper method (Edit POST)
+        // Helper method (Edit POST)
         private async Task<bool> EmployeeExists(int id)
         {
             return await _context.Employees.AnyAsync(e => e.Id == id);
         }
 
         // GET: Employees/Activate/5
-        // display confirmation of employee activation
+        // Display confirmation of Employee activation
         public async Task<IActionResult> Activate(int? id)
         {
             if (id == null)
@@ -501,7 +498,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // find employee for confirmation
+            // Find Employee for confirmation
             var employee = await _context.Employees
                                          .FirstOrDefaultAsync(m => m.Id == id);
            
@@ -510,7 +507,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // check if the employee is inactive 
+            // Check if the Employee is inactive 
             if (employee.IsActive)
             {
                 TempData["WarningMessage"] = $"Employee {employee.FirstName} {employee.LastName} is already active.";
@@ -521,7 +518,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // POST: Employees/Activate/5
-        // activate employee 
+        // Activate Employee 
         [HttpPost, ActionName("Activate")] // ActionName to GET
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActivateConfirmed(int id)
@@ -549,6 +546,5 @@ namespace AntiqueBookstore.Controllers
 
             return RedirectToAction(nameof(Index)); // Post-Redirect-Get (PRG)
         }
-
     }
 }

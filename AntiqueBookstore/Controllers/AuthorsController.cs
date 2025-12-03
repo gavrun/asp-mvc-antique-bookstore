@@ -7,13 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // work in progress
+    [Authorize(Roles = "Manager,Sales")] // TODO: work in progress
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         private readonly ILogger<AuthorsController> _logger; // Logger for AJAX
-
 
         public AuthorsController(ApplicationDbContext context, ILogger<AuthorsController> logger)
         {
@@ -53,7 +52,7 @@ namespace AntiqueBookstore.Controllers
         // GET: Authors/Create
         public IActionResult Create()
         {
-            // Просто отображаем пустое представление с формой
+            // Display an empty view with a form
             return View();
         }
 
@@ -65,10 +64,10 @@ namespace AntiqueBookstore.Controllers
             // Validation check specified in the Author class or attributes (on server)
             if (ModelState.IsValid)
             {
-                // add to context
+                // Add to context
                 _context.Add(author);
 
-                // save changes to the database
+                // Save changes to the database
                 await _context.SaveChangesAsync();
                 
                 return RedirectToAction(nameof(Index));
@@ -83,7 +82,7 @@ namespace AntiqueBookstore.Controllers
         [HttpGet]
         public IActionResult GetAuthorCreatePartial()
         {
-            // empty model
+            // Empty model
             return PartialView("_CreateAuthorPartial", new AuthorCreateAjaxViewModel());
         }
 
@@ -119,14 +118,14 @@ namespace AntiqueBookstore.Controllers
                 }
                 catch (DbUpdateException ex)
                 {
-                    // Ошибка БД
+                    // Database error
                     _logger.LogError(ex, "Error saving new Author via AJAX.");
                     return Json(new { success = false, message = "Database error occurred while saving the author." });
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "Unexpected error saving new author via AJAX.");
-                    return Json(new { success = false, message = "An unexpected error occurred." });
+                    return Json(new { success = false, message = "Unexpected error occurred." });
                 }
             }
             // INVALIDATED return JSON error or PartialView errors
@@ -234,7 +233,7 @@ namespace AntiqueBookstore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // Find the author that needs to be removed
+            // Find the Author that needs to be removed
             var author = await _context.Authors.FindAsync(id);
             if (author != null)
             {
@@ -248,7 +247,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // Перенаправляем на список авторов
+            // Redirect to Authors list
             return RedirectToAction(nameof(Index));
         }
     }

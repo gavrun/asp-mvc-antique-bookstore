@@ -20,7 +20,6 @@ namespace AntiqueBookstore.Models
         [Display(Name = "Status")]
         public string StatusName { get; set; }
 
-
         [Display(Name = "Total Amount")]
         [DataType(DataType.Currency)]
         [DisplayFormat(DataFormatString = "{0:C2}")] // Format as currency

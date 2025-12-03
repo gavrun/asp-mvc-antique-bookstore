@@ -4,7 +4,7 @@ namespace AntiqueBookstore.Models
 {
     public class AuthorCreateAjaxViewModel
     {
-        // properties for the AuthorCreateAjaxViewModel class corresponding to the Author entity
+        // Properties for AuthorCreateAjaxViewModel class corresponding to Author entity
 
         [Required]
         [StringLength(100)]
@@ -16,14 +16,13 @@ namespace AntiqueBookstore.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        // any annotations ??
+        // TODO: any annotations ??
         public int? BirthYear { get; set; }
 
         public int? DeathYear { get; set; }
 
         public string? Bio { get; set; }
 
-
-        // TODO: come back for BookAuthors many-to-many mapping
+        // TODO: BookAuthors many-to-many mapping
     }
 }

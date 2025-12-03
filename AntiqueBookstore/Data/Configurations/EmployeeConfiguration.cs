@@ -32,28 +32,27 @@ namespace AntiqueBookstore.Data.Configurations
             // Identity
             // Relation to ApplicationUser, 1-to-1, configured here, or in ApplicationUserConfiguration (not implemented)
             builder.HasOne(e => e.ApplicationUser)
-                   .WithOne(au => au.Employee) // NOTE: Navigation property in ApplicationUser
+                   .WithOne(au => au.Employee)                        // Navigation property in ApplicationUser
                    .HasForeignKey<Employee>(e => e.ApplicationUserId) // FK to Employee
-                   .IsRequired(false) // Employee exists without an Identity user reference
-                   .OnDelete(DeleteBehavior.SetNull); // Reset FK for the Employee if IdentityUser is deleted
+                   .IsRequired(false)                                 // Employee exists without an Identity user reference
+                   .OnDelete(DeleteBehavior.SetNull);                 // Reset FK for the Employee if IdentityUser is deleted
 
-            // NOTE: Protect, make sure ApplicationUserId can store Guid (Identity)
+            // Protect, make sure ApplicationUserId can store Guid (Identity)
             builder.Property(e => e.ApplicationUserId)
-                  .HasMaxLength(450) // Default length for Identity keys
+                  .HasMaxLength(450)                                  // Default length for Identity keys
                   .IsRequired(false);
 
-            builder.HasIndex(e => e.ApplicationUserId).IsUnique(); // One User - one Employee
-
+            builder.HasIndex(e => e.ApplicationUserId).IsUnique();    // One User - one Employee
 
             // Relation to Order (1-to-Many) configured in OrderConfiguration
 
             // Relation to PositionHistory (1-to-Many) 
             builder.HasMany(e => e.PositionHistories)
-                   .WithOne(ph => ph.Employee) // Navigation property in Employee
+                   .WithOne(ph => ph.Employee)                        // Navigation property in Employee
                    .HasForeignKey(ph => ph.EmployeeId)
-                   .OnDelete(DeleteBehavior.Cascade); // When deleting Employee, we delete his job history
+                   .OnDelete(DeleteBehavior.Cascade);                 // When deleting Employee, we delete his job history
 
-            // Seed data
+            // Seed Employees
             builder.HasData(
                 new Employee
                 {

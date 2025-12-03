@@ -11,7 +11,7 @@ namespace AntiqueBookstore.Models
         public string LevelName { get; set; } = string.Empty;
 
         [Display(Name = "Start Date")]
-        [DataType(DataType.Date)] // make it look like a date picker
+        [DataType(DataType.Date)] // Make it look like a date picker
         public DateTime StartDate { get; set; }
 
         [Display(Name = "End Date")]

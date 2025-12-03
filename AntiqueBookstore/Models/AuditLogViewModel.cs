@@ -11,11 +11,9 @@ namespace AntiqueBookstore.Models
         // Paginated list of Audit logs
         //public IPagedList<SalesAuditLog>? AuditLogs { get; set; }
 
-
         public SelectList? LoginList { get; set; }
 
         public string? SelectedLogin { get; set; }
-
 
         // Properties for manual pagination 
         // public int CurrentPage { get; set; }

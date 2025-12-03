@@ -54,7 +54,7 @@
                         <span asp-validation-for="Comment" class="text-danger"></span>
                     </div>
 
-                    @* NOTE: ApplicationUserId *@
+                    @* TODO: ApplicationUserId *@
                     @* <div class="mb-3">
                         <label asp-for="SelectedApplicationUserId" class="form-label"></label>
                         
@@ -72,7 +72,6 @@
                 </div>
             </div>
 
-
             <div class="mt-4">
                 <input type="submit" value="Save Changes" class="btn btn-success" /> 
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
@@ -80,7 +79,6 @@
         </form>
     </div>
 </div>
-
 
 @section Scripts {
     @{
@@ -116,5 +114,3 @@
         });
     </script>
 }
-
-

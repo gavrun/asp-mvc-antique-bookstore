@@ -18,8 +18,9 @@ namespace AntiqueBookstore.Data.Configurations
 
             builder.Property(os => os.IsActive)
                 .IsRequired();
-                //.HasDefaultValue(true);
+            //.HasDefaultValue(true);
 
+            // Seed data
             builder.HasData(
                 new OrderStatus { Id = 1, Name = "New", IsActive = true },
                 new OrderStatus { Id = 2, Name = "Processing", IsActive = true },

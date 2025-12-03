@@ -15,7 +15,7 @@ namespace AntiqueBookstore.Data.Configurations
                 .HasMaxLength(100);
 
             builder.Property(se => se.Discount)
-                   .HasPrecision(4, 2) // Precision for Discount, for example, from 0.00 to 0.99 (1.00)
+                   .HasPrecision(4, 2) // Precision for Discount, e.g. from 0.00 to 0.99 (1.00)
                    .IsRequired();
 
             builder.Property(se => se.StartDate)
@@ -23,7 +23,6 @@ namespace AntiqueBookstore.Data.Configurations
 
             builder.Property(se => se.EndDate)
                 .IsRequired();
-
 
             // Relation to Sale (1-to-Many) configured in SaleConfiguration (WithOne)
 

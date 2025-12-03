@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // work in progress
+    [Authorize(Roles = "Manager,Sales")] // TODO: work in progress
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;

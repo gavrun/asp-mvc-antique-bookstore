@@ -121,7 +121,7 @@ namespace AntiqueBookstore.Data.Interceptors
                         auditEntries.Add(new SalesAuditLog
                         {
                             TableName = tableName,
-                            RecordId = recordId, // Note: PK might be temporary if DB-generated (e.g., IDENTITY), EF handles mapping later.
+                            RecordId = recordId, // PK might be temporary if DB-generated (e.g., IDENTITY), EF handles mapping later.
                             Operation = operation,
                             ColumnName = columnName, // Log each column individually
                             OldValue = null, // No old value for an Added record

@@ -8,7 +8,7 @@
         public string City { get; set; } = string.Empty;
         public string AddressLine1 { get; set; } = string.Empty;
         public string? AddressLine2 { get; set; } // Nullable
-        public string PostalCode { get; set; } = string.Empty; // NOTE: Named Postal Index or ZIP code as PostalCode
+        public string PostalCode { get; set; } = string.Empty; // Named Postal Index or ZIP code as PostalCode
         public string? Details { get; set; } // Nullable
 
         // Foreign key to Customer (1-to-Many)

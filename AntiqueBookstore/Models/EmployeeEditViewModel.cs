@@ -36,12 +36,10 @@ namespace AntiqueBookstore.Models
         // public string? CurrentPositionTitle { get; set; }
         // public DateTime? CurrentPositionStartDate { get; set; }
 
-
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
 
-
-        // NOTE: Link to ApplicationUser, BLOCKED: implemented in a separate page to avoid confusion
+        // TODO: Link to ApplicationUser, BLOCKED: implemented in a separate page to avoid confusion
 
         //[Display(Name = "Linked User Account")]
         //public string? SelectedApplicationUserId { get; set; } // ID of the selected user (can be null/empty)

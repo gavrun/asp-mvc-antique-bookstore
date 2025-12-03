@@ -11,7 +11,7 @@
 
         // Relation to ApplicationUser
         public string? ApplicationUserId { get; set; } // Nullable
-        // NOTE: Protect, Employee can be created before ApplicationUser
+        // Protect, Employee can be created before ApplicationUser
 
         // Navigation property to ApplicationUser
         public virtual ApplicationUser? ApplicationUser { get; set; }

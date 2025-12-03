@@ -22,7 +22,7 @@ namespace AntiqueBookstore.Data.Configurations
                    .WithMany(a => a.BookAuthors) // Using the navigation property in Author
                    .HasForeignKey(ba => ba.AuthorId)
                    .OnDelete(DeleteBehavior.Restrict); // Cannot delete Author if it is associated with Books.
-                                                       // NOTE: Cascade is dangerous here, deleting the Author might delete the Books
+                                                       // Cascade is dangerous here, deleting the Author might delete the Books
 
             // Seed data
             builder.HasData(

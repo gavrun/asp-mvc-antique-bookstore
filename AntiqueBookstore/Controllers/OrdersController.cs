@@ -9,13 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Sales,Manager")] // work in progress
+    [Authorize(Roles = "Sales,Manager")] // TODO: work in progress
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager; // Orders by Employee
-
 
         public OrdersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -23,13 +22,12 @@ namespace AntiqueBookstore.Controllers
             _userManager = userManager;
         }
 
-
         // GET: Orders
-        // show list of orders 
+        // Show list of Orders 
         public async Task<IActionResult> Index(bool showCancelled = false)
         {
-            // get a list of orders with related data included by employee (Manager all, Sales limited by Id)
-            // + parameter to optionally show cancelled orders
+            // Get a list of orders with related data included by Employee (Manager all, Sales limited by Id)
+            // + parameter to optionally show cancelled Orders
 
             // Base query including Sales for calculated property
             var ordersQuery = _context.Orders
@@ -86,7 +84,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Orders/Details/5
-        // display details of a specific order
+        // Display details of specific Order
         public async Task<IActionResult> Details(int? id)
         {
             // Order by ID with OrderItems and other relations
@@ -162,10 +160,10 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Orders/Create
-        // display a form for creating a new order
+        // Display a form for creating a new Order
         public async Task<IActionResult> Create()
         {
-            // get data for ViewModel (lists Customer, Employee, OrderStatus, Book, etc.)
+            // Get data for ViewModel (lists Customer, Employee, OrderStatus, Book, etc.)
 
             var viewModel = new OrderCreateViewModel();
 
@@ -187,19 +185,19 @@ namespace AntiqueBookstore.Controllers
                 }
             }
 
-            // return prepared ViewModel
+            // Return prepared ViewModel
             return View(viewModel);
         }
 
         // POST: Orders/Create
-        // process form data to create a new order
+        // Process form data to create a new Order
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(OrderCreateViewModel viewModel) // [Bind("...")] or ViewModel or Sales[index].BookId
         {
             // Save an order and its OrderItems
 
-            // Check if at least one sale item is added
+            // Check if at least one Sale item is added
             if (viewModel.Sales == null || !viewModel.Sales.Any())
             {
                 ModelState.AddModelError("Sales", "Please add at least one book to the order.");
@@ -325,12 +323,12 @@ namespace AntiqueBookstore.Controllers
                               .ToListAsync(),
                 "Id", "Title");
 
-            // Note: Failed POST attempt
+            // Failed POST attempt
             // The view will need to be able to render the previously entered Sales items if ModelState is invalid.
         }
 
         // GET: Orders/Edit/5
-        // display the order editing form
+        // Display the Order editing form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -338,7 +336,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // receive an order for editing include relations for editing
+            // Receive an Order for editing include relations for editing
             var order = await _context.Orders
                 .Include(o => o.Sales) 
                 .ThenInclude(s => s.Book) // Needs book title for display
@@ -368,7 +366,7 @@ namespace AntiqueBookstore.Controllers
                 }
             }
 
-            // get data for ViewModel
+            // Get data for ViewModel
             var viewModel = new OrderEditViewModel
             {
                 Id = order.Id,
@@ -391,7 +389,7 @@ namespace AntiqueBookstore.Controllers
                 .ToList()
             };
 
-            // populate SelectLists
+            // Populate SelectLists
             await PopulateEditViewModelSelectLists(viewModel);
 
             return View(viewModel);
@@ -422,7 +420,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // POST: Orders/Edit/5
-        // process form data for order editing
+        // Process form data for Order editing
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, OrderEditViewModel viewModel) // [Bind("...")] or ViewModel or Sales[index].BookId
@@ -445,8 +443,9 @@ namespace AntiqueBookstore.Controllers
                 return NotFound($"Order with ID {id} not found.");
             }
 
-            // 3. Authorization Check (Sales can only edit their own orders)
-            //    Re-check authorization against the loaded entity
+            // Authorization Check (Sales can only edit their own Orders)
+            // Re-check authorization against the loaded entity
+
             // Role-based filtering
             if (User.IsInRole("Sales"))
             {
@@ -561,7 +560,7 @@ namespace AntiqueBookstore.Controllers
                 }
             } 
 
-            // repopulate lists 
+            // Repopulate lists 
             await PopulateEditViewModelSelectLists(viewModel);
 
             return View(viewModel);
@@ -709,7 +708,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Orders/Cancel/5
-        // Display confirmation page for cancelling an order
+        // Display confirmation page for cancelling an Order
         public async Task<IActionResult> Cancel(int? id)
         {
             if (id == null)
@@ -717,7 +716,7 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // Load order details needed for confirmation display
+            // Load Order details needed for confirmation display
             var orderToCancel = await _context.Orders
                                         .Include(o => o.Customer)
                                         .Include(o => o.Employee)
@@ -764,7 +763,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // POST: Orders/Cancel/5
-        // Confirms and processes the order cancellation
+        // Confirms and processes the Order cancellation
         [HttpPost, ActionName("Cancel")] // to map Cancel.cshtml form 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CancelConfirmed(int id)
@@ -850,7 +849,7 @@ namespace AntiqueBookstore.Controllers
             catch (DbUpdateException ex)
             {
                 // _logger.LogError(ex, "Error cancelling Order ID {OrderId}", orderToCancel.Id);
-                TempData["ErrorMessage"] = "An error occurred while cancelling the order. Please try again or contact support.";
+                TempData["ErrorMessage"] = "Error occurred while cancelling the order. Please try again or contact support.";
 
                 return RedirectToAction(nameof(Details), new { id = id });
             }
@@ -859,7 +858,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Orders/Delete/5
-        // display confirmation of order deletion
+        // Display confirmation of Order deletion
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -867,23 +866,23 @@ namespace AntiqueBookstore.Controllers
                 return NotFound();
             }
 
-            // order details to confirm deletion
+            // Order details to confirm deletion
             // OrderExists(id);
 
-            // INFO: not implemented
+            // TODO: not implemented
 
             return View(new Order { Id = id.Value }); // stub
         }
 
         // POST: Orders/Delete/5
-        // delete order 
+        // Delete order 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // delete an order (and possibly linked OrderItems)
+            // Delete Order (and possibly linked OrderItems)
 
-            // INFO: not implemented
+            // TODO: not implemented
 
             return RedirectToAction(nameof(Index));
         }
@@ -891,9 +890,9 @@ namespace AntiqueBookstore.Controllers
         // Helper method 
         private bool OrderExists(int id)
         {
-            // check the existence of an Order
+            // Check the existence of Order
 
-            // INFO: not implemented
+            // TODO: not implemented
 
             return false; // stub
         }
