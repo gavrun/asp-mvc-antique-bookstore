@@ -1,17 +1,9 @@
 # Privacy Policy
 
-**Document ID**: DOC-SEC-001  
-**Document Type**: Security & Compliance  
-**Project**: Antique Bookstore  
-**Status**: Draft  
-**Last Updated**: 2025-04-09  
-**Author**: Developer (study project)
-
-**Comment:** This document is a mockup inspired by ITIL Service Design guidelines. 
-
 ## 1. Introduction
 
-This document outlines the privacy policy for the Antique Bookstore web application, developed as part of an educational project. Although the application is not intended for production or public deployment, this document simulates a formal approach to data privacy and compliance.
+This document outlines the privacy policy for the Antique Bookstore web application, developed as part of an educational project. 
+Although the application is not intended for production or public deployment, this document simulates a formal approach to data privacy and compliance.
 
 ## 2. Scope
 
@@ -20,7 +12,6 @@ This policy applies to all users and components of the Antique Bookstore system.
 ## 3. Data Collection
 
 The application does **not** collect or store any personal data from real users.
-
 All data used in the application, including customer names, addresses, and orders, is fictitious and exists solely for demonstration and educational purposes.
 
 ## 4. Cookies and Tracking
