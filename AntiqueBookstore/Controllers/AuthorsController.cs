@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // TODO: work in progress
+    [Authorize(Roles = "Manager,Sales")] // ISSUE: controller actions limited to Sales
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,6 +50,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Authors/Create
+        [Authorize(Roles = "Manager")]
         public IActionResult Create()
         {
             // Display an empty view with a form
@@ -59,6 +60,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Authors/Create
         [HttpPost]
         [ValidateAntiForgeryToken] // CSRF protection
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([Bind("FirstName,LastName,BirthYear,DeathYear,Bio")] Author author) // All Author's properties to bind
         {
             // Validation check specified in the Author class or attributes (on server)
@@ -80,6 +82,7 @@ namespace AntiqueBookstore.Controllers
 
         // GET: /Authors/_CreateAuthorPartial
         [HttpGet]
+        [Authorize(Roles = "Manager")]
         public IActionResult GetAuthorCreatePartial()
         {
             // Empty model
@@ -89,6 +92,7 @@ namespace AntiqueBookstore.Controllers
         // POST: /Authors/CreateAuthorAjax
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateAuthorAjax([Bind("FirstName,LastName,BirthYear,DeathYear,Bio")] AuthorCreateAjaxViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -137,6 +141,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -158,6 +163,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Authors/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,BirthYear,DeathYear,Bio")] Author author) // Needs Id in Bind()
         {
             // Check if the ID from the route matches the ID in the model
@@ -209,6 +215,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -231,6 +238,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Authors/Delete/5
         [HttpPost, ActionName("Delete")] // This method handles POST request for the Delete action.
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             // Find the Author that needs to be removed

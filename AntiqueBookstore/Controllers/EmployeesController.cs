@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-     [Authorize(Roles = "Manager")] // TODO: work in progress
+     [Authorize(Roles = "Manager")]
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;

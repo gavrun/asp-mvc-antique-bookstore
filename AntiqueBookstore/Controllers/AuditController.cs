@@ -13,7 +13,7 @@ using System.Text;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager")] // TODO: work in progress
+    [Authorize(Roles = "Manager")]
     public class AuditController : Controller
     {
         private readonly ApplicationDbContext _context;

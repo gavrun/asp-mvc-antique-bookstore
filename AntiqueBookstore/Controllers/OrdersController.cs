@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Sales,Manager")] // TODO: work in progress
+    [Authorize(Roles = "Sales,Manager")] // ISSUE: controller actions limited to Sales
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -723,6 +723,7 @@ namespace AntiqueBookstore.Controllers
 
         // GET: Orders/Cancel/5
         // Display confirmation page for cancelling an Order
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> Cancel(int? id)
         {
             if (id == null)
@@ -780,6 +781,7 @@ namespace AntiqueBookstore.Controllers
         // Confirms and processes the Order cancellation
         [HttpPost, ActionName("Cancel")] // to map Cancel.cshtml form 
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CancelConfirmed(int id)
         {
             // Load Order with Sales and related Books to update Book statuses
@@ -873,6 +875,7 @@ namespace AntiqueBookstore.Controllers
 
         // GET: Orders/Delete/5
         // Display confirmation of Order deletion
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -892,6 +895,7 @@ namespace AntiqueBookstore.Controllers
         // Delete order 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             // Delete Order (and possibly linked OrderItems)
