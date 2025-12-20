@@ -62,14 +62,27 @@
         {
             @foreach (var item in Model.AuditLogs)
             {
+                // ISSUE: interceptor grabs default key value early
                 <tr>
                     <td>@item.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>@Html.DisplayFor(modelItem => item.TableName)</td>
-                    <td>@Html.DisplayFor(modelItem => item.RecordId)</td>
+                    <td>
+                        @{
+                            var rId = item.RecordId ?? "";
+                            var rShowId = (rId.StartsWith("-")) ? "(new ID)" : rId;
+                        }
+                        @rShowId
+                    </td>
                     <td>@Html.DisplayFor(modelItem => item.Operation)</td>
                     <td>@Html.DisplayFor(modelItem => item.ColumnName)</td>
                     <td><small>@Html.DisplayFor(modelItem => item.OldValue)</small></td>
-                    <td><small>@Html.DisplayFor(modelItem => item.NewValue)</small></td>
+                    <td>
+                        @{
+                            var nvId = item.NewValue ?? "";
+                            var nvShowId = (nvId.StartsWith("-")) ? "(new ID)" : nvId;
+                        }
+                        @nvShowId
+                    </td>
                     <td>@Html.DisplayFor(modelItem => item.Login)</td>
                 </tr>
             }
