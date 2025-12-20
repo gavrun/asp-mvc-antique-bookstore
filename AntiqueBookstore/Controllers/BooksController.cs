@@ -11,7 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // TODO: work in progress
+    [Authorize(Roles = "Manager,Sales")] // ISSUE: controller actions limited to Sales
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -52,6 +52,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Books/Create
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create()
         {
             // TODO: refactor Repopulate 
@@ -91,6 +92,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Books/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(BookCreateViewModel viewModel)
         {
             // Server-side validation
@@ -251,6 +253,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -294,6 +297,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Books/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Edit(int id,
             [Bind("Id,Title,Publisher,PublicationDate,PurchasePrice,RecommendedPrice,ConditionId,StatusId,SelectedAuthorIds,ExistingCoverImagePath")] BookEditViewModel viewModel,
             IFormFile? coverImageFile) // Matches <input type="file">
@@ -477,6 +481,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -505,6 +510,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")] // ActionName("Delete") matters if the method is called differently (DeleteConfirmed) asp-action="Delete"
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             // Find Book by id, including linked data

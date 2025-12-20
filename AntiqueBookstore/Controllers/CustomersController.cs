@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // TODO: work in progress
+    [Authorize(Roles = "Manager,Sales")] // ISSUE: controller actions limited to Sales
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -119,6 +119,7 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +140,7 @@ namespace AntiqueBookstore.Controllers
         // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customers.FindAsync(id);
