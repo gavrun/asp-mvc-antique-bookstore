@@ -472,18 +472,32 @@ namespace AntiqueBookstore.Controllers
                     .Select(s => s.BookId)
                     .Distinct()
                     .ToList();
-                // This is a business model strict check.
-                var availableBooksFound = await _context.Books
-                                                 .Where(b => requestedBookIds.Contains(b.Id) && b.StatusId == 1)
+
+                var existingBookIdsInOrder = orderToUpdate.Sales
+                    .Select(s => s.BookId)
+                    .Distinct()
+                    .ToList();
+
+                var newlyAddedBookIds = requestedBookIds
+                    .Except(existingBookIdsInOrder)
+                    .ToList();
+
+                // ISSUE business model strict check only for new Books
+                if (newlyAddedBookIds.Any())
+                {
+                    var availableBooksFound = await _context.Books
+                                                 .Where(b => newlyAddedBookIds.Contains(b.Id) && b.StatusId == 1)
                                                  .Select(b => b.Id)
                                                  .ToListAsync();
 
-                if (availableBooksFound.Count != requestedBookIds.Count)
-                {
-                    var problematicIds = requestedBookIds.Except(availableBooksFound)
-                        .ToList();
+                    if (availableBooksFound.Count != requestedBookIds.Count)
+                    {
+                        var problematicIds = requestedBookIds
+                            .Except(availableBooksFound)
+                            .ToList();
 
-                    ModelState.AddModelError("Sales", $"One or more selected books (IDs: {string.Join(", ", problematicIds)}) are no longer available (Status is not 'Available' or book does not exist). Please review the items.");
+                        ModelState.AddModelError("Sales", $"One or more selected books (IDs: {string.Join(", ", problematicIds)}) are no longer available (Status is not 'Available' or book does not exist). Please review the items.");
+                    }
                 }
             }
 
