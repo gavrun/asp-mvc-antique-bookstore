@@ -116,6 +116,7 @@ This stage covers testing strategy, test plans and cases, as well as describes a
 ```
 \docs
   └── \testing
+     ├── \defect_bug_report.md
      ├── \test_cases.md
      ├── \test_data.md
      ├── \test_execution_report.md
@@ -133,8 +134,7 @@ Deployment and CI/CD documents, monitoring, release notes, and end-user document
   |  ├── \environment_setup.md
   |  ├── \deployment_guide.md
   |  ├── \ci_cd_pipeline.md
-  |  ├── \backup_strategy.md
-  |  └── \logging_monitoring.md
+  |  └── \backup_strategy.md
   └── \release
      ├── \release_notes.md
      ├── \changelog.md
@@ -216,7 +216,7 @@ git clone https://github.com/gavrun/asp-mvc-antique-bookstore.git
 \AntiqueBookstore\appsettings.json
 {
   "ConnectionStrings": {
-    "DefaultConnection": 
+    "DefaultConnection": "Server=...;Database=...;"
     }
 }
 ```
@@ -229,7 +229,7 @@ dotnet restore
 
 5. Run application in Visual Studio (Ctrl + F5).
 
-6. Application is intended to run migrations automatically and to create db schema. Optionally, apply database migrations (press 'Apply Migrations' button), or run migrations manually.
+6. Application is intended to run migrations automatically in Development mode and to create db schema. Optionally, apply database migrations (press 'Apply Migrations' button), or run migrations manually.
 
 ``` 
 dotnet tool install --global dotnet-ef
@@ -255,7 +255,7 @@ UserName "unlinked@example.com", Password "unlinked"
 https://localhost:<port>/Identity/Account/Login
 ```
 
-The `Manager` and `Sales` already have assigned roles as part of data seeding, but in UI in [User Management] you will see them as unassigned for demonstration, just click "Assign Role" through. 
+The `Manager` and `Sales` already have assigned roles as part of data seeding, but in UI in [User Management] you will see them as unassigned for demonstration, click "Assign Role" for each one. 
 
 9. Login with Sales and unlinked accounts.
 
