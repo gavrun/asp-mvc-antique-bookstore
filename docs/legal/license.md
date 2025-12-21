@@ -25,5 +25,5 @@ This license is automatically terminated if the above conditions are violated.
 
 ## 6. Contact
 
-For inquiries or clarifications regarding this license, please open an issue in the [GitHub repository](https://github.com/gavrun/asp-antique-bookstore).
+For inquiries or clarifications regarding this license, please open an issue in the [GitHub repository](https://github.com/gavrun/asp-mvc-antique-bookstore).
 
