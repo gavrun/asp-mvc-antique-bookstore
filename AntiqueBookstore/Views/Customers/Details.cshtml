@@ -1,10 +1,23 @@
 ﻿@model AntiqueBookstore.Domain.Entities.Customer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Customer Details";
 }
 
-<h1>Details</h1>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h3>@ViewData["Title"]</h3>
 
 <div>
     <h4>Customer</h4>
@@ -47,8 +60,11 @@
             @Html.DisplayFor(model => model.Comment)
         </dd>
     </dl>
+    <hr />
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> 
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Customer</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
 </div>

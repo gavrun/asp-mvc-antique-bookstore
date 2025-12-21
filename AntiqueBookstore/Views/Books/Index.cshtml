@@ -7,16 +7,41 @@
 @{
     ViewData["Title"] = "Book Catalog";
 
+    var books = Model?.ToList() ?? new List<AntiqueBookstore.Domain.Entities.Book>();
+
+    var total = books.Count;
+    var available = books.Count(c => c.StatusId == 1);
+
     // Default cover image
     string defaultCoverPath = "/images/covers/book_cover_no.jpg"; 
 }
 
 <h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary mb-3">Add New Book</a>
-</p>
 <hr />
+
+<div class="row mb-3 align-items-start">
+    <div class="col-md-8">
+        <p>
+            <a asp-action="Create" class="btn btn-primary mb-3">Add New Book</a>
+            <a asp-action="Index" asp-route-availableOnly="true" class="btn btn-outline-success mb-3">Show only Available Books</a>
+            @if ((bool?)ViewData["AvailableOnly"] == true)
+            {
+                <a asp-action="Index" class="btn btn-outline-secondary mb-3">Show all Books</a>
+            }
+        </p>
+    </div>
+
+    @* Info table *@
+    <div class="col-md-4">
+        <div class="border p-2 small">
+            <h6 class="mb-1 font-weight-bold">Summary:</h6>
+            <span class="font-weight-bold">[Total @total]</span>
+            <span class="font-weight-bold">[Available for Sale @available]</span>
+        </div>
+    </div>
+</div>
+<hr />
+
 
 @if (Model != null && Model.Any())
 {
@@ -62,7 +87,10 @@
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
                             </div>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            @if (User.IsInRole("Manager"))
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            }
                         </div>
                     </div>
                 </div>
@@ -74,5 +102,4 @@ else
 {
     <p>No books found in the catalog.</p>
 }
-
 <hr />

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.IdentityModel.Tokens;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AntiqueBookstore.Controllers
 {
@@ -35,17 +36,25 @@ namespace AntiqueBookstore.Controllers
         }
 
         // GET: /Books or /Books/Index
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool availableOnly = false)
         {
-            // TODO: fetch books from the database
-            var books = await _context.Books
-                .Include(b => b.BookAuthors)
-                .ThenInclude(ba => ba.Author)
+            // Fetch books from the database
+            var allBooks = _context.Books
+                .Include(b => b.BookAuthors).ThenInclude(ba => ba.Author)
                 .Include(b => b.Condition)
                 .Include(b => b.Status)
+                .AsQueryable();
+
+            if (availableOnly)
+            {
+                allBooks = allBooks.Where(b => b.StatusId == 1); // Available
+            }
+
+            var books = await allBooks
                 .OrderBy(b => b.Title)
                 .ToListAsync();
 
+            ViewData["AvailableOnly"] = availableOnly;
             return View(books);
 
             //return View();
