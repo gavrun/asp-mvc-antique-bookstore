@@ -4,7 +4,10 @@ using AntiqueBookstore.Data.Seed;
 using AntiqueBookstore.Domain.Entities;
 using AntiqueBookstore.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace AntiqueBookstore
 {
@@ -48,7 +51,7 @@ namespace AntiqueBookstore
             {
                 // Configure database provider
                 options.UseSqlServer(connectionString);
-                // options.EnableSensitiveDataLogging(); // WARNING: Sensitive data in logs
+                options.EnableSensitiveDataLogging(); // WARNING: Sensitive data in logs
 
                 // Configure resolved interceptor instance
                 var interceptor = serviceProvider.GetRequiredService<SalesAuditInterceptor>();
@@ -79,9 +82,19 @@ namespace AntiqueBookstore
                 .AddDefaultTokenProviders()
                 .AddDefaultUI(); // ApplicationPartManager, IdentityOptions probably overriden here
 
+            // Localization
+            builder.Services.AddLocalization();
+
             // MVC configuration
-            builder.Services.AddRazorPages(); 
-            builder.Services.AddControllersWithViews();
+            builder.Services
+                .AddRazorPages()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            builder.Services
+                .AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
 
             // Services configuration
             builder.Services.AddScoped<IFileStorageService, LocalFileStorageService>();
@@ -118,6 +131,24 @@ namespace AntiqueBookstore
 
             app.UseRouting();
 
+            // Request localization configuration
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("ru-RU")
+            };
+
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            };
+
+            localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+
+            app.UseRequestLocalization(localizationOptions);
+
             // Configure checks if user logged in and has permission to access resource
             app.UseAuthentication();
             app.UseAuthorization();
@@ -133,7 +164,7 @@ namespace AntiqueBookstore
             //    endpoints.MapControllers();
             //});
 
-            app.MapRazorPages(); 
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",

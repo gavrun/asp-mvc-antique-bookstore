@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // ISSUE: controller actions limited to Sales
+    [Authorize(Roles = "Manager,Sales")] // Сontroller actions limited to Sales
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;

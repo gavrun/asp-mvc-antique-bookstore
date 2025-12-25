@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // ISSUE: controller actions limited to Sales
+    [Authorize(Roles = "Manager,Sales")] // Сontroller actions limited to Sales
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
