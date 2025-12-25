@@ -75,6 +75,8 @@ This stage refines the conceptual model into detailed logical structures (class 
 ```
 \docs
   ├── \architecture
+  |  ├── component_diagram.md
+  |  ├── context_diagram.md
   │  └── sequence_diagram.md
   ├── \api
   │  └── \api_reference.md
@@ -133,6 +135,7 @@ Deployment and CI/CD documents, monitoring, release notes, and end-user document
   └── \deployment
   |  ├── \environment_setup.md
   |  ├── \deployment_guide.md
+  |  ├── \deployment_diagram.md
   |  ├── \ci_cd_pipeline.md
   |  └── \backup_strategy.md
   └── \release
@@ -176,6 +179,7 @@ Support policies, troubleshooting documentation, maintenance roadmap live here.
 │   ├── \Exceptions
 │   └── \Interfaces
 ├── \Models
+├── \Resources
 ├── \Properties
 ├── \Services
 ├── \Views
