@@ -12,7 +12,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AntiqueBookstore.Controllers
 {
-    [Authorize(Roles = "Manager,Sales")] // ISSUE: controller actions limited to Sales
+    [Authorize(Roles = "Manager,Sales")] // Сontroller actions limited to Sales
     public class BooksController : Controller
     {
         private readonly ApplicationDbContext _context;

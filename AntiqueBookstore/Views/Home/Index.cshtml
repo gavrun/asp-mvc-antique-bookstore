@@ -1,4 +1,9 @@
-﻿@{
+﻿@using AntiqueBookstore.Resources
+@using Microsoft.Extensions.Localization
+
+@inject IStringLocalizer<SharedResource> L
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -7,11 +12,11 @@
 @if (User.Identity == null || !User.Identity.IsAuthenticated)
 {
     <div class="text-center">
-        <h1 class="display-4">Welcome to the Antique Bookstore</h1>
+        <h2 class="display-4">@L["Home_Welcome"]</h2>
 
-        <p>Management system where we sell rare and antique books.</p>
+        <p>@L["Home_AboutSys"]</p>
 
-        <p>Please <a asp-area="Identity" asp-page="/Account/Login">log in</a> or <a asp-area="Identity" asp-page="/Account/Register">register</a> to continue.</p>
+        <p>@L["Home_Pls"] <a asp-area="Identity" asp-page="/Account/Login">@L["Auth_Login"]</a> @L["Home_Or"] <a asp-area="Identity" asp-page="/Account/Register">@L["Auth_Register"]</a> @L["Home_ToCont"].</p>
 
         <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     </div>
